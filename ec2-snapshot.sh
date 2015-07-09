@@ -12,8 +12,8 @@ vars=(
   INSTANCE_ID
 )
 
-# lookup ec2 instance-id with facter
-INSTANCE_ID=$(facter ec2_instance_id)
+# lookup ec2 instance-id
+INSTANCE_ID=$(wget -q -O- http://169.254.169.254/latest/meta-data/instance-id)
 
 # check that all required env vars are declared
 for v in ${vars[*]}
