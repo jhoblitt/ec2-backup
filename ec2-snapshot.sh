@@ -35,11 +35,11 @@ virtualenv venv
 pip install -q awscli
 
 # install ec2-automate-backup-awscli.sh
-wget --no-clobber https://raw.githubusercontent.com/colinbjohnson/aws-missing-tools/master/ec2-automate-backup/ec2-automate-backup-awscli.sh
+wget --no-clobber --no-verbose https://raw.githubusercontent.com/colinbjohnson/aws-missing-tools/master/ec2-automate-backup/ec2-automate-backup-awscli.sh
 chmod a+x ec2-automate-backup-awscli.sh
 
 # jq
-wget --no-clobber https://stedolan.github.io/jq/download/linux64/jq
+wget --no-clobber --no-verbose https://stedolan.github.io/jq/download/linux64/jq
 chmod a+x jq
 
 # lookup volume-ids for our instance-id; assuming only one volume is mounted
