@@ -38,7 +38,10 @@ do
 done
 
 # install the awscli util
-virtualenv venv
+if [[ ! -e venv/bin/activate ]]; then
+    virtualenv venv
+fi
+
 . venv/bin/activate
 
 pip install -q awscli
