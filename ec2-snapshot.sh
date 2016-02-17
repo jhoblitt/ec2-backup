@@ -50,4 +50,4 @@ chmod a+x jq
 VOLUME_ID=$(aws ec2 describe-volumes --filters Name=attachment.instance-id,Values=${INSTANCE_ID} | ./jq --raw-output '.Volumes[0].VolumeId')
 
 # snapshot our volume-id
-"./${BACKUP_SCRIPT}" -v $VOLUME_ID -k 31 -n
+"./${BACKUP_SCRIPT}" -v $VOLUME_ID -k 91 -n
