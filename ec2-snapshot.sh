@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 die() {
-  >&2 echo $@
+  >&2 echo "$@"
   exit 1
 }
 
@@ -47,7 +47,7 @@ wget --no-clobber --no-verbose https://stedolan.github.io/jq/download/linux64/jq
 chmod a+x jq
 
 # lookup volume-ids for our instance-id; assuming only one volume is mounted
-VOLUME_ID=$(aws ec2 describe-volumes --filters Name=attachment.instance-id,Values=${INSTANCE_ID} | ./jq --raw-output '.Volumes[0].VolumeId')
+VOLUME_ID="$(aws ec2 describe-volumes --filters Name=attachment.instance-id,Values="${INSTANCE_ID}" | ./jq --raw-output '.Volumes[0].VolumeId')"
 
 # snapshot our volume-id
-"./${BACKUP_SCRIPT}" -v $VOLUME_ID -k 91 -n -p
+"./${BACKUP_SCRIPT}" -v "$VOLUME_ID" -k 91 -n -p
