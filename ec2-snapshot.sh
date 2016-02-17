@@ -35,7 +35,7 @@ virtualenv venv
 pip install -q awscli
 
 # install ec2-automate-backup-awscli.sh
-wget --no-clobber --no-verbose https://raw.githubusercontent.com/colinbjohnson/aws-missing-tools/master/ec2-automate-backup/ec2-automate-backup-awscli.sh
+wget --no-clobber --no-verbose "https://raw.githubusercontent.com/colinbjohnson/aws-missing-tools/master/ec2-automate-backup/ec2-automate-backup.sh"
 chmod a+x ec2-automate-backup-awscli.sh
 
 # jq
