@@ -35,8 +35,12 @@ virtualenv venv
 pip install -q awscli
 
 # install ec2-automate-backup-awscli.sh
-wget --no-clobber --no-verbose "https://raw.githubusercontent.com/colinbjohnson/aws-missing-tools/master/ec2-automate-backup/ec2-automate-backup.sh"
-chmod a+x ec2-automate-backup-awscli.sh
+# per https://github.com/colinbjohnson/aws-missing-tools/issues/106
+# this script was renamed to ec2-automate-backup.sh
+# XXX pinning to the commit sha
+BACKUP_SCRIPT="ec2-automate-backup.sh"
+wget --no-clobber --no-verbose "https://raw.githubusercontent.com/colinbjohnson/aws-missing-tools/1b6cd230dde529f3bf4c19ea80fccdf42e479dae/ec2-automate-backup/${BACKUP_SCRIPT}"
+chmod a+x "$BACKUP_SCRIPT"
 
 # jq
 wget --no-clobber --no-verbose https://stedolan.github.io/jq/download/linux64/jq
@@ -46,4 +50,4 @@ chmod a+x jq
 VOLUME_ID=$(aws ec2 describe-volumes --filters Name=attachment.instance-id,Values=${INSTANCE_ID} | ./jq --raw-output '.Volumes[0].VolumeId')
 
 # snapshot our volume-id
-./ec2-automate-backup-awscli.sh -v $VOLUME_ID -k 31 -n
+"./${BACKUP_SCRIPT}" -v $VOLUME_ID -k 31 -n
