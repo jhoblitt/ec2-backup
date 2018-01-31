@@ -18,6 +18,20 @@ if [[ ! -e jq ]]; then
     chmod a+x jq
 fi
 
+cmds=(
+  wget
+  jq
+  aws
+)
+
+# check that all required cli programs are present
+for c in ${cmds[*]}
+do
+  if ! hash "$c" 2>/dev/null; then
+    die "prog: $c is required"
+  fi
+done
+
 # lookup ec2 instance-id
 INSTANCE_ID=${INSTANCE_ID:-$(wget -q -O- 'http://169.254.169.254/latest/meta-data/instance-id')}
 
