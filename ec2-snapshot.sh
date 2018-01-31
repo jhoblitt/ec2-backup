@@ -31,8 +31,7 @@ do
   # indirection in bash, the best we can do is check for empty string (which
   # shouldn't be a problem in this case as an empty string can't be used with
   # the aws cli)
-  eval check=\$$v
-  if [ -z "${check}" ]; then
+  if [[ -z ${!v} ]]; then
     die "env var $v is required"
   fi
 done
