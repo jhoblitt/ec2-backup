@@ -36,15 +36,6 @@ do
   fi
 done
 
-# install the awscli util
-if [[ ! -e venv/bin/activate ]]; then
-    virtualenv venv
-fi
-
-. venv/bin/activate
-
-pip install -q awscli
-
 # install ec2-automate-backup-awscli.sh
 # per https://github.com/colinbjohnson/aws-missing-tools/issues/106
 # this script was renamed to ec2-automate-backup.sh
