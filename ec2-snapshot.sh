@@ -12,12 +12,6 @@ vars=(
   REGION
 )
 
-# install jq
-if [[ ! -e jq ]]; then
-    wget --no-clobber --no-verbose 'https://stedolan.github.io/jq/download/linux64/jq'
-    chmod a+x jq
-fi
-
 cmds=(
   wget
   jq
@@ -36,7 +30,7 @@ done
 INSTANCE_ID=${INSTANCE_ID:-$(wget -q -O- 'http://169.254.169.254/latest/meta-data/instance-id')}
 
 # lookup ec2 region
-REGION=${REGION:-$(wget -q -O- 'http://169.254.169.254/latest/dynamic/instance-identity/document' | ./jq --raw-output '.region')}
+REGION=${REGION:-$(wget -q -O- 'http://169.254.169.254/latest/dynamic/instance-identity/document' | jq --raw-output '.region')}
 
 # check that all required env vars are declared
 for v in ${vars[*]}
@@ -59,7 +53,7 @@ wget --no-clobber --no-verbose "https://raw.githubusercontent.com/colinbjohnson/
 chmod a+x "$BACKUP_SCRIPT"
 
 # lookup volume-ids for our instance-id; assuming only one volume is mounted
-VOLUME_ID="$(aws ec2 describe-volumes --region "$REGION" --filters Name=attachment.instance-id,Values="${INSTANCE_ID}" | ./jq --raw-output '.Volumes[0].VolumeId')"
+VOLUME_ID="$(aws ec2 describe-volumes --region "$REGION" --filters Name=attachment.instance-id,Values="${INSTANCE_ID}" | jq --raw-output '.Volumes[0].VolumeId')"
 
 # option snapshot our volume-id
 
