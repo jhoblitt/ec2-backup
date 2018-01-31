@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+BACKUP_SCRIPT='ec2-automate-backup.sh'
+
 die() {
   >&2 echo "$@"
   exit 1
@@ -16,6 +18,7 @@ cmds=(
   wget
   jq
   aws
+  $BACKUP_SCRIPT
 )
 
 # check that all required cli programs are present
@@ -44,14 +47,6 @@ do
   fi
 done
 
-# install ec2-automate-backup-awscli.sh
-# per https://github.com/colinbjohnson/aws-missing-tools/issues/106
-# this script was renamed to ec2-automate-backup.sh
-# XXX pinning to the commit sha
-BACKUP_SCRIPT="ec2-automate-backup.sh"
-wget --no-clobber --no-verbose "https://raw.githubusercontent.com/colinbjohnson/aws-missing-tools/1b6cd230dde529f3bf4c19ea80fccdf42e479dae/ec2-automate-backup/${BACKUP_SCRIPT}"
-chmod a+x "$BACKUP_SCRIPT"
-
 # lookup volume-ids for our instance-id; assuming only one volume is mounted
 VOLUME_ID="$(aws ec2 describe-volumes --region "$REGION" --filters Name=attachment.instance-id,Values="${INSTANCE_ID}" | jq --raw-output '.Volumes[0].VolumeId')"
 
@@ -60,6 +55,6 @@ VOLUME_ID="$(aws ec2 describe-volumes --region "$REGION" --filters Name=attachme
 # XXX for unknown reasons, ec2-automate-backup.sh defaults to EC2_REGION
 # instead of AWS_DEFAULT_REGION -- so we are setting it an exclitly as a cli
 # option
-"./${BACKUP_SCRIPT}" -v "$VOLUME_ID" -r "$REGION" -k 91d -n -p
+"$BACKUP_SCRIPT" -v "$VOLUME_ID" -r "$REGION" -k 91d -n -p
 
 # vim: tabstop=2 shiftwidth=2 expandtab
