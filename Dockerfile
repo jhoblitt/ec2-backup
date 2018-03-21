@@ -12,5 +12,3 @@ RUN wget --no-verbose "$BACKUP_SCRIPT_URL" -O "$BACKUP_SCRIPT" && \
 
 COPY ec2-snapshot.sh "$RUN_SCRIPT"
 RUN chmod a+x "$RUN_SCRIPT"
-
-ENTRYPOINT ["/usr/local/bin/ec2-snapshot.sh"]
