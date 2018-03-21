@@ -4,7 +4,8 @@ ARG BACKUP_SCRIPT_URL='https://raw.githubusercontent.com/lsst-sqre/aws-missing-t
 ARG BACKUP_SCRIPT='/usr/local/bin/ec2-automate-backup.sh'
 ARG RUN_SCRIPT='/usr/local/bin/ec2-snapshot.sh'
 
-RUN apk add --no-cache --update bash wget ca-certificates jq && \
+# need gnu date from coreutils
+RUN apk add --no-cache --update bash wget ca-certificates jq coreutils && \
     rm -rf /root/.cache
 
 RUN wget --no-verbose "$BACKUP_SCRIPT_URL" -O "$BACKUP_SCRIPT" && \
