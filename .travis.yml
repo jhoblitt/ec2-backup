@@ -1,0 +1,33 @@
+os: linux
+language: ruby
+matrix:
+  include:
+    - env: TEST=shellcheck
+      services:
+        - docker
+      script: |
+        set -e
+        shopt -s globstar nullglob
+        CHECK=( **/*.sh )
+        [[ ${#CHECK[@]} -eq 0 ]] && exit
+        docker run -v $(pwd):$(pwd) -w $(pwd) \
+          koalaman/shellcheck-alpine:v0.4.6 -x "${CHECK[@]}"
+    - env: TEST=markdown
+      services:
+        - docker
+      script: |
+        set -e
+        shopt -s globstar nullglob
+        CHECK=( **/*.md )
+        [[ ${#CHECK[@]} -eq 0 ]] && exit
+        docker run -ti -v $(pwd):$(pwd) -w $(pwd) \
+          mivok/markdownlint:latest "${CHECK[@]}"
+    - env: TEST=make
+      script: |
+        set -e
+        make --dry-run --warn-undefined-variables
+branches:
+  only:
+  - master
+notifications:
+  email: false
