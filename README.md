@@ -4,14 +4,12 @@ ec2-snapshot
 A simple script to create and manage snapshots of the EC2 instance upon which
 it is executed.
 
-
 Dependencies
 ------------
 
 * python-virtualenv
 * python-pip
 * wget
-
 
 Usage
 -----
@@ -22,9 +20,9 @@ Usage
 
     ./ec2-snapshot.sh
 
-
 See Also
 --------
+
 * [`awscli`](https://github.com/aws/aws-cli)
 * [`ec2-automate-backup-awscli.sh`](https://github.com/colinbjohnson/aws-missing-tools/)
 * [`jq`](https://stedolan.github.io/jq/)
