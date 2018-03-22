@@ -24,8 +24,7 @@ cmds=(
 )
 
 # check that all required cli programs are present
-for c in ${cmds[*]}
-do
+for c in "${cmds[@]}"; do
   if ! hash "$c" 2>/dev/null; then
     die "prog: $c is required"
   fi
@@ -38,8 +37,7 @@ INSTANCE_ID=${INSTANCE_ID:-$(wget -q -O- 'http://169.254.169.254/latest/meta-dat
 REGION=${REGION:-$(wget -q -O- 'http://169.254.169.254/latest/dynamic/instance-identity/document' | jq --raw-output '.region')}
 
 # check that all required env vars are declared
-for v in ${vars[*]}
-do
+for v in "${vars[@]}"; do
   # it doesn't seem to be possible to check for undefined variables via
   # indirection in bash, the best we can do is check for empty string (which
   # shouldn't be a problem in this case as an empty string can't be used with
