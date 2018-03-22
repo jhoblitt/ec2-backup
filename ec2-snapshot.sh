@@ -14,13 +14,6 @@ has_cmd() {
   command -v "$command" > /dev/null 2>&1
 }
 
-vars=(
-  AWS_ACCESS_KEY_ID
-  AWS_SECRET_ACCESS_KEY
-  INSTANCE_ID
-  REGION
-)
-
 cmd_check() {
   local cmds=(
     wget
@@ -37,6 +30,25 @@ cmd_check() {
   done
 }
 
+var_check() {
+  local vars=(
+    AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY
+    INSTANCE_ID
+    REGION
+  )
+  for v in "${vars[@]}"; do
+    # it doesn't seem to be possible to check for undefined variables via
+    # indirection in bash, the best we can do is check for empty string (which
+    # shouldn't be a problem in this case as an empty string can't be used with
+    # the aws cli)
+    if [[ -z ${!v} ]]; then
+      die "env var $v is required"
+    fi
+  done
+}
+
+
 # check that required progs are avaiable
 cmd_check
 
@@ -47,15 +59,7 @@ INSTANCE_ID=${INSTANCE_ID:-$(wget -q -O- 'http://169.254.169.254/latest/meta-dat
 REGION=${REGION:-$(wget -q -O- 'http://169.254.169.254/latest/dynamic/instance-identity/document' | jq --raw-output '.region')}
 
 # check that all required env vars are declared
-for v in "${vars[@]}"; do
-  # it doesn't seem to be possible to check for undefined variables via
-  # indirection in bash, the best we can do is check for empty string (which
-  # shouldn't be a problem in this case as an empty string can't be used with
-  # the aws cli)
-  if [[ -z ${!v} ]]; then
-    die "env var $v is required"
-  fi
-done
+var_check
 
 # lookup volume-ids for our instance-id; assuming only one volume is mounted
 VOLUME_ID="$(aws ec2 describe-volumes --region "$REGION" --filters Name=attachment.instance-id,Values="${INSTANCE_ID}" | jq --raw-output '.Volumes[0].VolumeId')"
