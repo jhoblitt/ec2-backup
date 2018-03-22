@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 BACKUP_SCRIPT='ec2-automate-backup.sh'
 
 die() {
