@@ -21,7 +21,7 @@ matrix:
         CHECK=( **/*.md )
         [[ ${#CHECK[@]} -eq 0 ]] && exit
         docker run -ti -v $(pwd):$(pwd) -w $(pwd) \
-          mivok/markdownlint:latest "${CHECK[@]}"
+          mivok/markdownlint:0.4.0 "${CHECK[@]}"
     - env: TEST=make
       script: |
         set -e
