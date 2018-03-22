@@ -7,9 +7,11 @@ it is executed.
 Dependencies
 ------------
 
-* python-virtualenv
-* python-pip
-* wget
+* `bash`
+* [`wget`](https://www.gnu.org/software/wget/)
+* [`awscli`](https://github.com/aws/aws-cli)
+* [`jq`](https://stedolan.github.io/jq/)
+* [`ec2-automate-backup-awscli.sh`](https://github.com/colinbjohnson/aws-missing-tools/)
 
 Usage
 -----
@@ -19,10 +21,3 @@ Usage
     export AWS_DEFAULT_REGION=us-east-1
 
     ./ec2-snapshot.sh
-
-See Also
---------
-
-* [`awscli`](https://github.com/aws/aws-cli)
-* [`ec2-automate-backup-awscli.sh`](https://github.com/colinbjohnson/aws-missing-tools/)
-* [`jq`](https://stedolan.github.io/jq/)
