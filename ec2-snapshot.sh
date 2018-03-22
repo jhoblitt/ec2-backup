@@ -69,7 +69,12 @@ REGION=${REGION:-$(
 var_check
 
 # lookup volume-ids for our instance-id; assuming only one volume is mounted
-VOLUME_ID="$(aws ec2 describe-volumes --region "$REGION" --filters Name=attachment.instance-id,Values="${INSTANCE_ID}" | jq --raw-output '.Volumes[0].VolumeId')"
+VOLUME_ID="$(
+  aws ec2 describe-volumes \
+    --region "$REGION" \
+    --filters Name=attachment.instance-id,Values="${INSTANCE_ID}" \
+    | jq --raw-output '.Volumes[0].VolumeId'
+)"
 
 # option snapshot our volume-id
 
