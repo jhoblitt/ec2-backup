@@ -48,15 +48,22 @@ var_check() {
   done
 }
 
+meta_lookup() {
+  local path=${1?path is required}
+
+  wget -q -O- "http://169.254.169.254/latest/${path}"
+}
 
 # check that required progs are avaiable
 cmd_check
 
 # lookup ec2 instance-id
-INSTANCE_ID=${INSTANCE_ID:-$(wget -q -O- 'http://169.254.169.254/latest/meta-data/instance-id')}
+INSTANCE_ID=${INSTANCE_ID:-$(meta_lookup meta-data/instance-id)}
 
 # lookup ec2 region
-REGION=${REGION:-$(wget -q -O- 'http://169.254.169.254/latest/dynamic/instance-identity/document' | jq --raw-output '.region')}
+REGION=${REGION:-$(
+  meta_lookup dynamic/instance-identity/document | jq -j --raw-output '.region'
+)}
 
 # check that all required env vars are declared
 var_check
