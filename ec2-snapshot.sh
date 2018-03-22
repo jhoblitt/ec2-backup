@@ -91,9 +91,6 @@ VOLUME_ID="$(
 
 print_settings
 
-# XXX for unknown reasons, ec2-automate-backup.sh defaults to EC2_REGION
-# instead of AWS_DEFAULT_REGION -- so we are setting it an exclitly as a cli
-# option
 "$BACKUP_SCRIPT" -v "$VOLUME_ID" -r "$REGION" -k 91d -n -p
 
 # vim: tabstop=2 shiftwidth=2 expandtab
