@@ -26,6 +26,18 @@ matrix:
       script: |
         set -e
         make --dry-run --warn-undefined-variables
+    - env: TEST=docker
+      services:
+        - docker
+      script: |
+        set -e
+        shopt -s globstar nullglob
+        CHECK=( **/Dockerfile )
+        [[ ${#CHECK[@]} -eq 0 ]] && exit
+        for df in "${CHECK[@]}"; do
+          docker run -ti -v$(pwd):$(pwd) -w $(pwd) \
+            lukasmartinelli/hadolint hadolint --ignore DL3013 Dockerfile
+        done
 branches:
   only:
   - master
