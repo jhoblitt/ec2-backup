@@ -54,6 +54,19 @@ meta_lookup() {
   wget -q -O- "http://169.254.169.254/latest/${path}"
 }
 
+print_settings() {
+  local settings=(
+    BACKUP_SCRIPT
+    INSTANCE_ID
+    REGION
+    VOLUME_ID
+  )
+
+  for i in "${settings[@]}"; do
+    echo "${i}: ${!i}"
+  done
+}
+
 # check that required progs are avaiable
 cmd_check
 
@@ -76,7 +89,7 @@ VOLUME_ID="$(
     | jq --raw-output '.Volumes[0].VolumeId'
 )"
 
-# option snapshot our volume-id
+print_settings
 
 # XXX for unknown reasons, ec2-automate-backup.sh defaults to EC2_REGION
 # instead of AWS_DEFAULT_REGION -- so we are setting it an exclitly as a cli
