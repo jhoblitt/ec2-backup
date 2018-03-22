@@ -9,6 +9,11 @@ die() {
   exit 1
 }
 
+has_cmd() {
+  local command=${1?command is required}
+  command -v "$command" > /dev/null 2>&1
+}
+
 vars=(
   AWS_ACCESS_KEY_ID
   AWS_SECRET_ACCESS_KEY
@@ -16,19 +21,24 @@ vars=(
   REGION
 )
 
-cmds=(
-  wget
-  jq
-  aws
-  $BACKUP_SCRIPT
-)
+cmd_check() {
+  local cmds=(
+    wget
+    jq
+    aws
+    $BACKUP_SCRIPT
+  )
 
-# check that all required cli programs are present
-for c in "${cmds[@]}"; do
-  if ! hash "$c" 2>/dev/null; then
-    die "prog: $c is required"
-  fi
-done
+  # check that all required cli programs are present
+  for c in "${cmds[@]}"; do
+    if ! has_cmd "$c"; then
+      die "prog: ${c} is required"
+    fi
+  done
+}
+
+# check that required progs are avaiable
+cmd_check
 
 # lookup ec2 instance-id
 INSTANCE_ID=${INSTANCE_ID:-$(wget -q -O- 'http://169.254.169.254/latest/meta-data/instance-id')}
