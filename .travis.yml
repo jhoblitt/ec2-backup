@@ -36,7 +36,7 @@ matrix:
         [[ ${#CHECK[@]} -eq 0 ]] && exit
         for df in "${CHECK[@]}"; do
           docker run -ti -v$(pwd):$(pwd) -w $(pwd) \
-            lukasmartinelli/hadolint hadolint --ignore DL3013 Dockerfile
+            hadolint/hadolint hadolint "$df"
         done
 branches:
   only:
