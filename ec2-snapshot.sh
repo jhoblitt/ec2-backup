@@ -91,6 +91,6 @@ VOLUME_ID="$(
 
 print_settings
 
-"$BACKUP_SCRIPT" -v "$VOLUME_ID" -r "$REGION" -k 91d -n -p
+"$BACKUP_SCRIPT" -v "$VOLUME_ID" -r "$REGION" -k 91d -n -p -d
 
 # vim: tabstop=2 shiftwidth=2 expandtab
