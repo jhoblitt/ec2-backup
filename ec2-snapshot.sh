@@ -91,6 +91,11 @@ VOLUME_ID="$(
 
 print_settings
 
-"$BACKUP_SCRIPT" -v "$VOLUME_ID" -r "$REGION" -k 91d -n -p
+if [[ -v CUSTOM_TAGS ]]; then
+  "$BACKUP_SCRIPT" -v "$VOLUME_ID" -r "$REGION" -k 91d -n -p -d \
+    -c "$CUSTOM_TAGS"
+else
+  "$BACKUP_SCRIPT" -v "$VOLUME_ID" -r "$REGION" -k 91d -n -p -d
+fi
 
 # vim: tabstop=2 shiftwidth=2 expandtab
