@@ -38,11 +38,7 @@ var_check() {
     REGION
   )
   for v in "${vars[@]}"; do
-    # it doesn't seem to be possible to check for undefined variables via
-    # indirection in bash, the best we can do is check for empty string (which
-    # shouldn't be a problem in this case as an empty string can't be used with
-    # the aws cli)
-    if [[ -z ${!v} ]]; then
+    if [[ ! -v ${v} ]]; then
       die "env var $v is required"
     fi
   done
